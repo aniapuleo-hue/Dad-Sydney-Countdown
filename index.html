@@ -3,84 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown till Arrival in Sydney</title>
+    <title>Dad and Lidka's First Aussie Visit</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
             height: 100%;
+            background: linear-gradient(135deg, #dc143c 0%, #ffffff 25%, #006644 75%, #012169 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #dc143c 0%, #ffffff 25%, #006644 75%, #012169 100%);
-            color: #012169;
         }
 
-        .countdown-container {
-            background: rgba(255, 255, 255, 0.85);
+        .container {
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
             padding: 40px;
-            text-align: center;
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            max-width: 600px;
+            text-align: center;
+            max-width: 800px;
             width: 90%;
         }
 
         .title {
             font-size: 2.5em;
-            margin-bottom: 20px;
             color: #dc143c;
-            font-weight: bold;
+            margin-bottom: 10px;
+            animation: glow 3s ease-in-out infinite alternate;
         }
 
         .subtitle {
             font-size: 1.2em;
-            color: #006644;
+            color: #012169;
             margin-bottom: 30px;
+        }
+
+        .journey-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .location-card {
+            flex: 1;
+            margin: 0 15px;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(1, 33, 105, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .location-card:hover {
+            transform: scale(1.05);
+        }
+
+        .location-icons {
+            display: flex;
+            justify-content: center;
+            font-size: 2em;
+            margin-top: 15px;
+        }
+
+        .location-icons span {
+            margin: 0 10px;
+            animation: bounce 2s infinite;
         }
 
         .countdown {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            margin-bottom: 30px;
         }
 
         .time-block {
-            background: #012169;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 100px;
+            margin: 0 15px;
             text-align: center;
         }
 
         .time-number {
             font-size: 3em;
-            font-weight: bold;
+            color: #012169;
             display: block;
         }
 
         .time-label {
+            color: #dc143c;
             text-transform: uppercase;
-            font-size: 0.8em;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #006644;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #dc143c;
+            border-radius: 5px;
+            width: 0;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(220,20,60,0.5); }
+            to { text-shadow: 0 0 20px rgba(220,20,60,1); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         @media (max-width: 600px) {
-            .countdown {
+            .journey-container {
                 flex-direction: column;
             }
-            .time-block {
+            .location-card {
                 margin: 10px 0;
-                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="countdown-container">
-        <div class="title">Countdown till Arrival in Sydney</div>
-        <div class="subtitle">Dad and Lidka's First Aussie Visit</div>
-        
+    <div class="container">
+        <div class="title">Dad and Lidka's First Aussie Visit</div>
+        <div class="subtitle">Countdown till Arrival in Sydney</div>
+
+        <div class="journey-container">
+            <div class="location-card">
+                <h2>Warsaw, Poland</h2>
+                <div class="location-icons">
+                    <span>🏰</span>
+                    <span>🥟</span>
+                    <span>❄️</span>
+                </div>
+            </div>
+            <div class="location-card">
+                <h2>Sydney, Australia</h2>
+                <div class="location-icons">
+                    <span>🎭</span>
+                    <span>🦘</span>
+                    <span>🏖️</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+
         <div class="countdown">
             <div class="time-block">
                 <span class="time-number" id="days">0</span>
@@ -98,22 +172,26 @@
     </div>
 
     <script>
+        const DEPARTURE_DATE = new Date('2025-12-18T08:40:00+01:00');
+        const ARRIVAL_DATE = new Date('2025-12-19T18:50:00+11:00');
+
         function updateCountdown() {
-            const arrivalDate = new Date('2025-12-19T18:50:00+11:00');
-            const now = new Date();
-            const difference = arrivalDate - now;
+            const now = new Date().getTime();
+            const distance = ARRIVAL_DATE - now;
 
-            if (difference > 0) {
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
-                document.getElementById('days').textContent = days;
-                document.getElementById('hours').textContent = hours;
-                document.getElementById('minutes').textContent = minutes;
-            } else {
-                document.querySelector('.countdown-container').innerHTML = '<h1>They have arrived!</h1>';
-            }
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+
+            const totalJourneyTime = ARRIVAL_DATE - DEPARTURE_DATE;
+            const elapsedTime = now - DEPARTURE_DATE;
+            const progressPercentage = Math.max(0, Math.min(100, (elapsedTime / totalJourneyTime) * 100));
+            
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
         }
 
         updateCountdown();
