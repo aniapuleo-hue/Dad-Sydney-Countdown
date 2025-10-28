@@ -1,1 +1,123 @@
-https://gist.github.com/anonymous/2f9b6b4d0f4f0f1a1b1b1b1b1b1b1b1b
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown till Arrival in Sydney</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #dc143c 0%, #ffffff 25%, #006644 75%, #012169 100%);
+            color: #012169;
+        }
+
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #dc143c;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #006644;
+            margin-bottom: 30px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .time-block {
+            background: #012169;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100px;
+            text-align: center;
+        }
+
+        .time-number {
+            font-size: 3em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .time-label {
+            text-transform: uppercase;
+            font-size: 0.8em;
+        }
+
+        @media (max-width: 600px) {
+            .countdown {
+                flex-direction: column;
+            }
+            .time-block {
+                margin: 10px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown-container">
+        <div class="title">Countdown till Arrival in Sydney</div>
+        <div class="subtitle">Dad and Lidka's First Aussie Visit</div>
+        
+        <div class="countdown">
+            <div class="time-block">
+                <span class="time-number" id="days">0</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-block">
+                <span class="time-number" id="hours">0</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-block">
+                <span class="time-number" id="minutes">0</span>
+                <span class="time-label">Minutes</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const arrivalDate = new Date('2025-12-19T18:50:00+11:00');
+            const now = new Date();
+            const difference = arrivalDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+            } else {
+                document.querySelector('.countdown-container').innerHTML = '<h1>They have arrived!</h1>';
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 60000);
+    </script>
+</body>
+</html>
